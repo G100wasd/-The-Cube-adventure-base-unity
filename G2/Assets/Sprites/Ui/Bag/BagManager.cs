@@ -50,12 +50,6 @@ public class BagManager : MonoBehaviour
         }
     }
     
-    // 神秘的添加测试函数
-    public void AddCargo()
-    {
-        ItemList[index] = new Item(Random.Range(0, 5), Random.Range(2, 30));
-        index++;
-    }
     public int GetIndex(int id)
     {
         int index = -1;
@@ -135,6 +129,7 @@ public class BagManager : MonoBehaviour
     }
     public void Craft()
     {
+        Debug.Log("craft");
         int len = ItemList.Count;
         if (ItemList[len-2] != null && ItemList[len-3] != null )
         {
@@ -173,7 +168,6 @@ public class BagManager : MonoBehaviour
             }
 
         }
-        BagView.Instance.BagUpdate();
     }
     public bool isFull()
     {

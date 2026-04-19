@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8397161762388424964}
   - component: {fileID: 1937228155876891272}
   m_Layer: 6
-  m_Name: CargoMove
+  m_Name: GetCargoPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

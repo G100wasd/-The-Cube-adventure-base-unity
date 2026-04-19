@@ -948,6 +948,7 @@ GameObject:
   - component: {fileID: 634482899}
   - component: {fileID: 634482901}
   - component: {fileID: 634482902}
+  - component: {fileID: 634482903}
   m_Layer: 5
   m_Name: BagPanel
   m_TagString: Untagged
@@ -1047,6 +1048,21 @@ MonoBehaviour:
   bagManager: {fileID: 634482901}
   CargoMove: {fileID: 3157606995143176941, guid: effdb6c3e696000478530384bb3847d8, type: 3}
   CraftBtn: {fileID: 880133895}
+  canvas: {fileID: 380908589}
+--- !u!114 &634482903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634482897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ed4b90e7790d745a1c641dbf6bb737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  craftBtn: {fileID: 880133895}
+  getCargoPanel: {fileID: 3157606995143176941, guid: effdb6c3e696000478530384bb3847d8, type: 3}
   canvas: {fileID: 380908589}
 --- !u!1 &787199531
 GameObject:

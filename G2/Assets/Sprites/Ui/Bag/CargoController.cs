@@ -37,7 +37,8 @@ public class CargoController : MonoBehaviour, IPointerClickHandler, IPointerExit
         int click = 0;
         if (eventData.button == PointerEventData.InputButton.Left) { click = 0; }
         else if (eventData.button == PointerEventData.InputButton.Right) { click = 1; }
-        BagView.Instance.GetCargo(index, click);
+        BagContrtoller.Instance.GetCargo(index, click);
+        BagView.Instance.BagUpdate();
         color.DOColor(new Color(256, 256, 256, 160) / 256f, 0.2f);
     }
 
