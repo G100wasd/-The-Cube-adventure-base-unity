@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
         gameState = GameState.Start;
 
         SceneManager.LoadScene("UiScene", LoadSceneMode.Additive);
-        Debug.Log("1");
 
         UiController.OnGameStart += GameStart;
     }

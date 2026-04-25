@@ -49,6 +49,7 @@ public class UiController : MonoBehaviour
     public void onBackClick()
     {
         GameManager.Instance.isPause = false;
+        Time.timeScale = 1.0f;
         uiView.ShowPauseCanvas();
     }
     public void ChangePause()

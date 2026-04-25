@@ -22,8 +22,8 @@ public class BagManager : MonoBehaviour
     
     public static BagManager Instance { get; private set; }
 
-    [SerializeField] public GameObject Cargos;
     [SerializeField] public GameObject _CraftCargos;
+    [SerializeField] public GameObject _Cargos;
 
     private void Awake()
     {
@@ -33,8 +33,8 @@ public class BagManager : MonoBehaviour
     {
         ItemList = new List<Item>();
         CargoList = new List<GameObject>();
-        foreach(Transform child in Cargos.transform){ CargoList.Add(child.gameObject);}
-        foreach(Transform child in _CraftCargos.transform) {  CargoList.Add(child.gameObject);}
+        foreach(Transform child in _CraftCargos.transform) {  CargoList.Add(child.gameObject); print(CargoList.Count); }
+        foreach(Transform child in _Cargos.transform){ CargoList.Add(child.gameObject); print(CargoList.Count); }
         for(int i = 0; i < CargoList.Count; i++) { ItemList.Add(null); }
     }
 
@@ -65,7 +65,7 @@ public class BagManager : MonoBehaviour
         if(!isFull())
         {
             int _addAmount = 0;
-            for (int i = 0; i < ItemList.Count - 3 && amount > 0; i++)
+            for (int i = 3; i < ItemList.Count && amount > 0; i++)
             {
                 if (ItemList[i] == null)
                 {
@@ -129,37 +129,40 @@ public class BagManager : MonoBehaviour
     }
     public void Craft()
     {
+        //len - 1 == 2
+        //len - 2 == 1
+        //len - 3 == 0
         Debug.Log("craft");
         int len = ItemList.Count;
-        if (ItemList[len-2] != null && ItemList[len-3] != null )
+        if (ItemList[1] != null && ItemList[0] != null )
         {
-            Debug.Log(CharterModel.Instance.SkillList[ItemList[len - 2].id + 1]);
-            if (ItemList[len-2].id == ItemList[len - 3].id)
+            Debug.Log(CharterModel.Instance.SkillList[ItemList[1].id + 1]);
+            if (ItemList[1].id == ItemList[0].id)
             {
-                int amount = Mathf.Min(ItemList[len - 2].amount, ItemList[len-3].amount);
-                if (ItemList[len - 2].id < _maxId)
+                int amount = Mathf.Min(ItemList[1].amount, ItemList[0].amount);
+                if (ItemList[1].id < _maxId)
                 {
-                    if (!CharterModel.Instance.SkillList[ItemList[len - 2].id+1]) { return; }
-                    if (ItemList[len - 1] == null) 
+                    if (!CharterModel.Instance.SkillList[ItemList[1].id+1]) { return; }
+                    if (ItemList[2] == null) 
                     {
-                        ItemList[len - 1] = new Item(ItemList[len - 2].id + 1, amount); 
+                        ItemList[2] = new Item(ItemList[1].id + 1, amount); 
                     }
                     else
                     {
-                        if (ItemList[len - 1].amount + amount > _maxAmount) 
+                        if (ItemList[2].amount + amount > _maxAmount) 
                         {
-                            amount = _maxAmount - ItemList[len - 1].amount;
-                            ItemList[len - 1].amount = _maxAmount;
+                            amount = _maxAmount - ItemList[2].amount;
+                            ItemList[2].amount = _maxAmount;
                         }
                         else 
                         {
-                            ItemList[len - 1].amount += amount;
+                            ItemList[2].amount += amount;
                         }
                     }
-                    ItemList[len - 2].amount -= amount;
-                    ItemList[len - 3].amount -= amount;
-                    if (ItemList[len - 2].amount <= 0) { ItemList[len - 2] = null; }
-                    if (ItemList[len - 3].amount <= 0) { ItemList[len - 3] = null; }
+                    ItemList[1].amount -= amount;
+                    ItemList[0].amount -= amount;
+                    if (ItemList[1].amount <= 0) { ItemList[1] = null; }
+                    if (ItemList[0].amount <= 0) { ItemList[0] = null; }
 
                 }
 

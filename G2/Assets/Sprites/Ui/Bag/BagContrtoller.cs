@@ -77,7 +77,7 @@ public class BagContrtoller : MonoBehaviour
             }
             else if (isGetCargo)
             {
-                if(index == 18) { return; }
+                if(index == 0) { return; }
                 if(click == 0)
                 {
                     if(getCargoItem.id == bagManager.ItemList[index].id)
@@ -159,7 +159,7 @@ public class BagContrtoller : MonoBehaviour
             bagView.BagUpdate();
             return;
         }
-        offset = (new Vector2(50 + (getCargoRect.width/2), 50 + (getCargoRect.height)/2)) * canvas.scaleFactor;
+        offset = (new Vector2(25 + (getCargoRect.width/2), 25 + (getCargoRect.height)/2)) * canvas.scaleFactor;
         mousePos = Input.mousePosition;
         GetCargoUpdate();
     }
