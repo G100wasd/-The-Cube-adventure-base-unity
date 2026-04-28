@@ -33,10 +33,33 @@ public class GMcmd
         BagManager.Instance.Add(0, num);
         BagView.Instance.BagUpdate();
     }
+
     [MenuItem("GMcmd/添加me控制器")]
     public static void AddME()
     {
         BagManager.Instance.Add(6, 1);
         BagView.Instance.BagUpdate();
+    }
+
+    [MenuItem("GMcmd/一次性添加8组")]
+    public static void AddFour()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            BagManager.Instance.Add(Random.Range(0, 3), 64);
+        }
+        BagView.Instance.BagUpdate();
+    }
+
+    [MenuItem("GMcmd/一次性添加随机奇数组")]
+    public static void AddRandomOdd()
+    {
+        int num = Random.Range(100, 150)*2+1;
+        for (int i = 0; i < num; i++)
+        {
+            BagManager.Instance.Add(Random.Range(0, 3), 64);
+        }
+        BagView.Instance.BagUpdate();
+        Debug.Log($"当前背包有{BagManager.Instance.ItemList.Count - 3}个元素");
     }
 }

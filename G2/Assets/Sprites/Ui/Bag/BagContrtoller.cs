@@ -4,24 +4,30 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BagContrtoller : MonoBehaviour
+public class BagContrtoller : MonoBehaviour, IScrollHandler
 {
     BagManager bagManager;
     BagView bagView;
     GameObject getCargoObj;
     BagManager.Item getCargoItem;
     PackageTable packageTable;
+    
 
+    float scrollerSpeed;
     bool isGetCargo = false;
     Vector2 offset;
     Vector2 mousePos;
     Rect getCargoRect;
 
+
     [SerializeField] public Button craftBtn;
     [SerializeField] public GameObject getCargoPanel;
     [SerializeField] public Canvas canvas;
+    [SerializeField] public RectTransform cargoListViewRect;
+    [SerializeField] public GameObject cargos;
 
     public static BagContrtoller Instance;
 
@@ -54,6 +60,8 @@ public class BagContrtoller : MonoBehaviour
         getCargoRect = getCargoPanel.GetComponent<RectTransform>().rect;
         getCargoItem = new BagManager.Item(0, 0);
 
+        scrollerSpeed = 4.0f;
+        cargoListViewRect.anchoredPosition = new Vector2(0, 20);
     }
     public void GetCargo(int index, int click)
     {
@@ -176,6 +184,59 @@ public class BagContrtoller : MonoBehaviour
         }
     }
 
+    public void OnScroll(PointerEventData eventData)
+    {
+        float delta = eventData.scrollDelta.y * scrollerSpeed;
+        float top = 20;
+        float bottom = ((bagManager.ItemList.Count - 3) / 4) - 5;
 
+        if (delta > 0 && cargoListViewRect.anchoredPosition.y < top) { return; }
+        else if (delta < 0 && bagManager.viewStartIndex >= bottom && cargoListViewRect.anchoredPosition.y >= 36) { return; }
+
+        cargoListViewRect.anchoredPosition = new Vector2(0, cargoListViewRect.anchoredPosition.y - delta);
+
+        if (delta < 0)
+        {
+            if (cargoListViewRect.anchoredPosition.y >= 72)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    ObjectPoolController.instance.AddToPool(bagManager.CargoList[Convert.ToInt16(i + 3)]);
+                    bagManager.CargoList.RemoveAt(i + 3);
+                    GameObject obj = ObjectPoolController.instance.GetPool(cargos);
+                    obj.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+                    obj.transform.GetChild(0).GetComponent<TMP_Text>().gameObject.SetActive(false);
+                    bagManager.CargoList.Add(obj);
+                }
+                bagManager.viewStartIndex += 1;
+                cargoListViewRect.anchoredPosition = new Vector2(0, 16);
+                bagView.BagScrolleUpdateName(Convert.ToInt32(bagManager.viewStartIndex));
+                bagView.BagUpdate();
+            }
+
+
+        }
+        else if (delta > 0 && bagManager.viewStartIndex > 0)
+        {
+            if (cargoListViewRect.anchoredPosition.y <= 24)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    ObjectPoolController.instance.AddToPool(bagManager.CargoList[i + 23]);
+                    bagManager.CargoList.RemoveAt(i + 23);
+                    GameObject obj = ObjectPoolController.instance.GetPool(cargos);
+                    obj.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+                    obj.transform.GetChild(0).GetComponent<TMP_Text>().gameObject.SetActive(false);
+                    bagManager.CargoList.Add(obj);
+                }
+                bagManager.viewStartIndex -= 1;
+                cargoListViewRect.anchoredPosition = new Vector2(0, 76);
+                bagView.BagScrolleUpdateName(Convert.ToInt32(bagManager.viewStartIndex));
+                bagView.BagUpdate();
+            }
+
+        }
+
+    }
 
 }

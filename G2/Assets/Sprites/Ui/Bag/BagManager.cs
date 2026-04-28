@@ -19,11 +19,13 @@ public class BagManager : MonoBehaviour
     public List<Item> ItemList;
     public List<GameObject> CargoList;
     public int index = 0;
-    
+    public float viewStartIndex = 0;
+
     public static BagManager Instance { get; private set; }
 
     [SerializeField] public GameObject _CraftCargos;
     [SerializeField] public GameObject _Cargos;
+    [SerializeField] public GameObject _CargosPerfab;
 
     private void Awake()
     {
@@ -33,8 +35,8 @@ public class BagManager : MonoBehaviour
     {
         ItemList = new List<Item>();
         CargoList = new List<GameObject>();
-        foreach(Transform child in _CraftCargos.transform) {  CargoList.Add(child.gameObject); print(CargoList.Count); }
-        foreach(Transform child in _Cargos.transform){ CargoList.Add(child.gameObject); print(CargoList.Count); }
+        foreach(Transform child in _CraftCargos.transform) {  CargoList.Add(child.gameObject); }
+        foreach(Transform child in _Cargos.transform){ CargoList.Add(child.gameObject); }
         for(int i = 0; i < CargoList.Count; i++) { ItemList.Add(null); }
     }
 
@@ -82,7 +84,19 @@ public class BagManager : MonoBehaviour
             }
             return amount;
         }
-        return -1;
+        else
+        {
+            for (int i = 0;i < 4; i++) 
+            {
+                int index = ItemList.Count;
+                ItemList.Add(null);
+                GameObject obj = GameObject.Instantiate(_CargosPerfab);
+                ObjectPoolController.instance.AddToPool(obj);
+            }
+            Add(id, amount);
+        }
+            return -1;
+        
     }
     public void Decrase(int index)
     {
@@ -174,9 +188,10 @@ public class BagManager : MonoBehaviour
     }
     public bool isFull()
     {
-        for(int i = 0; i < ItemList.Count - 3; i++)
+        for(int i = 3; i < ItemList.Count; i++)
         {
             if (ItemList[i]==null) { return false; }
+            else if (ItemList[i].amount < 64) { return false; }
         }
 
         return true;

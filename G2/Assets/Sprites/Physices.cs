@@ -12,7 +12,6 @@ public class Phy : MonoBehaviour
     Vector2 Pos;
 
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private int jumpForce = 1;
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
