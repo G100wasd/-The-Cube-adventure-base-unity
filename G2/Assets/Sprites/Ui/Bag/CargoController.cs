@@ -26,7 +26,7 @@ public class CargoController : MonoBehaviour, IPointerClickHandler, IPointerExit
     private void Start()
     {
         uiCamera = Camera.main;
-        BagPanel = this.transform.parent.parent.parent.gameObject;
+        BagPanel = BagManager.Instance._BagPanel;
         canvas = BagPanel.transform.parent.gameObject.GetComponent<Canvas>();
         color = this.gameObject.GetComponent<Image>();
         packageTable = Resources.Load<PackageTable>("TableData/PackageTable");
@@ -40,7 +40,7 @@ public class CargoController : MonoBehaviour, IPointerClickHandler, IPointerExit
         BagContrtoller.Instance.GetCargo(index, click);
         BagView.Instance.BagUpdate();
         color.DOColor(new Color(256, 256, 256, 160) / 256f, 0.2f);
-    }
+    } // 若鼠标点击 执行点击相关操作
 
     public void OnPointerExit(PointerEventData eventData)
     {
@@ -76,7 +76,7 @@ public class CargoController : MonoBehaviour, IPointerClickHandler, IPointerExit
             canvasScale = canvas.scaleFactor;
             desTran.position = new Vector2(5, -5) + new Vector2(desTran.rect.width / 2, desTran.rect.height / -2) * canvasScale + mousePos;
         }
-    }
+    } // 若鼠标在格子中 生成描述框
 
     public void OnPointerEnter(PointerEventData eventData)
     {

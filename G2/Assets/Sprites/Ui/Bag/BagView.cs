@@ -17,14 +17,11 @@ public class BagView : MonoBehaviour
     [SerializeField] public Canvas canvas;
 
     PackageTable packageTable;
-    private void Start()
+    private void Awake()
     {
         Instance = this;
         packageTable = Resources.Load<PackageTable>("TableData/PackageTable");
-        BagUpdate();
     }
-
-
 
     public void BagUpdate()
     {
@@ -33,6 +30,7 @@ public class BagView : MonoBehaviour
             int index = Convert.ToInt32(bagManager.CargoList[i].name);
             Image cargoSprite = bagManager.CargoList[i].GetComponent<Image>();
             TMP_Text amountText = bagManager.CargoList[i].transform.GetChild(0).gameObject.GetComponent<TMP_Text>();
+            
             if (bagManager.ItemList[index] == null || bagManager.ItemList[index].amount == 0)
             {
                 amountText.gameObject.SetActive(false);
@@ -45,8 +43,7 @@ public class BagView : MonoBehaviour
                 cargoSprite.sprite = packageTable.DataList[bagManager.ItemList[index].id].sprite;
             }
         }
-    }
-
+    } // 通过cargolist[i]中的每个物体name获取itemlist[name]中的数据并更新
     public void BagScrolleUpdateName(int startIndex)
     {
         for (int i = 3; i < bagManager.CargoList.Count; i++)
@@ -55,5 +52,5 @@ public class BagView : MonoBehaviour
 
         }
 
-    }
+    } // 根据可视索引更新cargolist中每个物体的名称
 }

@@ -7,6 +7,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
+using System;
+
+
 #if UNITY_EDITOR
 using UnityEditor.UIElements;
 #endif
@@ -26,20 +30,38 @@ public class BagManager : MonoBehaviour
     [SerializeField] public GameObject _CraftCargos;
     [SerializeField] public GameObject _Cargos;
     [SerializeField] public GameObject _CargosPerfab;
+    [SerializeField] public GameObject _BagPanel;
 
     private void Awake()
     {
         Instance = this;
-    }
-    void Start()
-    {
         ItemList = new List<Item>();
         CargoList = new List<GameObject>();
-        foreach(Transform child in _CraftCargos.transform) {  CargoList.Add(child.gameObject); }
-        foreach(Transform child in _Cargos.transform){ CargoList.Add(child.gameObject); }
-        for(int i = 0; i < CargoList.Count; i++) { ItemList.Add(null); }
     }
 
+    private void Start()
+    {
+        initCargo();
+    }
+
+    public void initCargo()
+    {
+        foreach (Transform child in _CraftCargos.transform)
+        {
+            CargoList.Add(child.gameObject);
+        }
+        for (int i = 0; i < 24; i++)
+        {
+            GameObject obj = ObjectPoolController.instance.GetPool(_Cargos);
+            obj.SetActive(true);
+            obj.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+            CargoList.Add(obj);
+        }
+        Debug.Log(BagView.Instance);
+        for (int i = 0; i < CargoList.Count; i++) { ItemList.Add(null); }
+        BagView.Instance.BagScrolleUpdateName(Convert.ToInt32(viewStartIndex));
+        BagView.Instance.BagUpdate();
+    }
 
     public class Item
     {
@@ -86,17 +108,21 @@ public class BagManager : MonoBehaviour
         }
         else
         {
-            for (int i = 0;i < 4; i++) 
-            {
-                int index = ItemList.Count;
-                ItemList.Add(null);
-                GameObject obj = GameObject.Instantiate(_CargosPerfab);
-                ObjectPoolController.instance.AddToPool(obj);
-            }
+            extendCargo();
             Add(id, amount);
         }
-            return -1;
+        return -1;
         
+    }
+    public void extendCargo()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            int index = ItemList.Count;
+            ItemList.Add(null);
+            GameObject obj = GameObject.Instantiate(_CargosPerfab);
+            ObjectPoolController.instance.AddToPool(obj);
+        }
     }
     public void Decrase(int index)
     {

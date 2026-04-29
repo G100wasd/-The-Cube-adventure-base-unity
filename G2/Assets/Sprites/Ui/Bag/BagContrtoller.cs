@@ -137,7 +137,7 @@ public class BagContrtoller : MonoBehaviour, IScrollHandler
                 }
             }
         }
-    }
+    } // 背包中鼠标左键/右键的相关逻辑
     private void isGetCargoItemlNull()
     {
         if (getCargoItem != null && getCargoItem.amount <= 0)
@@ -146,7 +146,8 @@ public class BagContrtoller : MonoBehaviour, IScrollHandler
             getCargoItem = null;
             GameObject.Destroy(getCargoObj);
         }
-    }
+    } // 如果格子为空 移除
+    #region 格子拿取时的相关操作
     private void GetCargoMove()
     {
         if (!isGetCargo)
@@ -183,15 +184,18 @@ public class BagContrtoller : MonoBehaviour, IScrollHandler
             text.text = $"{getCargoItem.amount}";
         }
     }
+    #endregion
+
 
     public void OnScroll(PointerEventData eventData)
     {
         float delta = eventData.scrollDelta.y * scrollerSpeed;
-        float top = 20;
-        float bottom = ((bagManager.ItemList.Count - 3) / 4) - 5;
+        float top = 20; 
+        float bottom = ((bagManager.ItemList.Count - 3) / 4) - 5; // 规定最大可视索引
 
         if (delta > 0 && cargoListViewRect.anchoredPosition.y < top) { return; }
         else if (delta < 0 && bagManager.viewStartIndex >= bottom && cargoListViewRect.anchoredPosition.y >= 36) { return; }
+        // 若达到滚动最顶部，退出 || 若已达最大可视范围，退出
 
         cargoListViewRect.anchoredPosition = new Vector2(0, cargoListViewRect.anchoredPosition.y - delta);
 
@@ -237,6 +241,6 @@ public class BagContrtoller : MonoBehaviour, IScrollHandler
 
         }
 
-    }
+    } // 鼠标滚动逻辑 无限滚动容器实现
 
 }
