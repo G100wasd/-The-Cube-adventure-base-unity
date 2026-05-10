@@ -16,7 +16,7 @@ public class ObjectPoolController : MonoBehaviour
     {
         instance = this;
 
-        #region 对象池预热20个格子
+        #region 对象池预热24个格子
         for (int i = 0; i < 24; i++)
         {
             GameObject obj = GameObject.Instantiate(_CargoPerfabs, this.transform);
